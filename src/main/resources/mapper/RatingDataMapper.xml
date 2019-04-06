@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zqw.movie_recommend.dao.RatingDataMapper">
+  <resultMap id="BaseResultMap" type="com.zqw.movie_recommend.entity.RatingData">
+    <id column="mid" jdbcType="BIGINT" property="mid" />
+    <result column="stars5" jdbcType="VARCHAR" property="stars5" />
+    <result column="stars4" jdbcType="VARCHAR" property="stars4" />
+    <result column="stars3" jdbcType="VARCHAR" property="stars3" />
+    <result column="stars2" jdbcType="VARCHAR" property="stars2" />
+    <result column="stars1" jdbcType="VARCHAR" property="stars1" />
+    <result column="average" jdbcType="VARCHAR" property="average" />
+    <result column="rating_people" jdbcType="VARCHAR" property="ratingPeople" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    mid, stars5, stars4, stars3, stars2, stars1, average, rating_people
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rating_data
+    where mid = #{mid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from rating_data
+    where mid = #{mid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zqw.movie_recommend.entity.RatingData">
+    insert into rating_data (mid, stars5, stars4, 
+      stars3, stars2, stars1, 
+      average, rating_people)
+    values (#{mid,jdbcType=BIGINT}, #{stars5,jdbcType=VARCHAR}, #{stars4,jdbcType=VARCHAR}, 
+      #{stars3,jdbcType=VARCHAR}, #{stars2,jdbcType=VARCHAR}, #{stars1,jdbcType=VARCHAR}, 
+      #{average,jdbcType=VARCHAR}, #{ratingPeople,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zqw.movie_recommend.entity.RatingData">
+    insert into rating_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mid != null">
+        mid,
+      </if>
+      <if test="stars5 != null">
+        stars5,
+      </if>
+      <if test="stars4 != null">
+        stars4,
+      </if>
+      <if test="stars3 != null">
+        stars3,
+      </if>
+      <if test="stars2 != null">
+        stars2,
+      </if>
+      <if test="stars1 != null">
+        stars1,
+      </if>
+      <if test="average != null">
+        average,
+      </if>
+      <if test="ratingPeople != null">
+        rating_people,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mid != null">
+        #{mid,jdbcType=BIGINT},
+      </if>
+      <if test="stars5 != null">
+        #{stars5,jdbcType=VARCHAR},
+      </if>
+      <if test="stars4 != null">
+        #{stars4,jdbcType=VARCHAR},
+      </if>
+      <if test="stars3 != null">
+        #{stars3,jdbcType=VARCHAR},
+      </if>
+      <if test="stars2 != null">
+        #{stars2,jdbcType=VARCHAR},
+      </if>
+      <if test="stars1 != null">
+        #{stars1,jdbcType=VARCHAR},
+      </if>
+      <if test="average != null">
+        #{average,jdbcType=VARCHAR},
+      </if>
+      <if test="ratingPeople != null">
+        #{ratingPeople,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zqw.movie_recommend.entity.RatingData">
+    update rating_data
+    <set>
+      <if test="stars5 != null">
+        stars5 = #{stars5,jdbcType=VARCHAR},
+      </if>
+      <if test="stars4 != null">
+        stars4 = #{stars4,jdbcType=VARCHAR},
+      </if>
+      <if test="stars3 != null">
+        stars3 = #{stars3,jdbcType=VARCHAR},
+      </if>
+      <if test="stars2 != null">
+        stars2 = #{stars2,jdbcType=VARCHAR},
+      </if>
+      <if test="stars1 != null">
+        stars1 = #{stars1,jdbcType=VARCHAR},
+      </if>
+      <if test="average != null">
+        average = #{average,jdbcType=VARCHAR},
+      </if>
+      <if test="ratingPeople != null">
+        rating_people = #{ratingPeople,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where mid = #{mid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zqw.movie_recommend.entity.RatingData">
+    update rating_data
+    set stars5 = #{stars5,jdbcType=VARCHAR},
+      stars4 = #{stars4,jdbcType=VARCHAR},
+      stars3 = #{stars3,jdbcType=VARCHAR},
+      stars2 = #{stars2,jdbcType=VARCHAR},
+      stars1 = #{stars1,jdbcType=VARCHAR},
+      average = #{average,jdbcType=VARCHAR},
+      rating_people = #{ratingPeople,jdbcType=VARCHAR}
+    where mid = #{mid,jdbcType=BIGINT}
+  </update>
+</mapper>

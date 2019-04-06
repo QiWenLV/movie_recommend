@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zqw.movie_recommend.dao.MovieDataMapper">
+  <resultMap id="BaseResultMap" type="com.zqw.movie_recommend.entity.MovieData">
+    <id column="mid" jdbcType="BIGINT" property="mid" />
+    <result column="season_count" jdbcType="VARCHAR" property="seasonCount" />
+    <result column="year" jdbcType="VARCHAR" property="year" />
+    <result column="episodes" jdbcType="VARCHAR" property="episodes" />
+    <result column="site" jdbcType="VARCHAR" property="site" />
+    <result column="douban_site" jdbcType="VARCHAR" property="doubanSite" />
+    <result column="poster" jdbcType="VARCHAR" property="poster" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="imdb" jdbcType="VARCHAR" property="imdb" />
+    <result column="duration" jdbcType="VARCHAR" property="duration" />
+    <result column="writers" jdbcType="VARCHAR" property="writers" />
+    <result column="directors" jdbcType="VARCHAR" property="directors" />
+    <result column="countries" jdbcType="VARCHAR" property="countries" />
+    <result column="pubdate" jdbcType="VARCHAR" property="pubdate" />
+    <result column="genres" jdbcType="VARCHAR" property="genres" />
+    <result column="casts" jdbcType="VARCHAR" property="casts" />
+    <result column="aka" jdbcType="VARCHAR" property="aka" />
+    <result column="languages" jdbcType="VARCHAR" property="languages" />
+  </resultMap>
+  <resultMap id="MoviePojoResultMap" type="com.zqw.movie_recommend.entity.pojo.MoviePojo">
+    <id column="mid" jdbcType="BIGINT" property="mid" />
+    <result column="season_count" jdbcType="VARCHAR" property="seasonCount" />
+    <result column="year" jdbcType="VARCHAR" property="year" />
+    <result column="episodes" jdbcType="VARCHAR" property="episodes" />
+    <result column="site" jdbcType="VARCHAR" property="site" />
+    <result column="douban_site" jdbcType="VARCHAR" property="doubanSite" />
+    <result column="poster" jdbcType="VARCHAR" property="poster" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="imdb" jdbcType="VARCHAR" property="imdb" />
+    <result column="duration" jdbcType="VARCHAR" property="duration" />
+    <result column="writers" jdbcType="VARCHAR" property="writers" />
+    <result column="directors" jdbcType="VARCHAR" property="directors" />
+    <result column="countries" jdbcType="VARCHAR" property="countries" />
+    <result column="pubdate" jdbcType="VARCHAR" property="pubdate" />
+    <result column="genres" jdbcType="VARCHAR" property="genres" />
+    <result column="casts" jdbcType="VARCHAR" property="casts" />
+    <result column="aka" jdbcType="VARCHAR" property="aka" />
+    <result column="languages" jdbcType="VARCHAR" property="languages" />
+    <result column="stars5" jdbcType="VARCHAR" property="stars5" />
+    <result column="stars4" jdbcType="VARCHAR" property="stars4" />
+    <result column="stars3" jdbcType="VARCHAR" property="stars3" />
+    <result column="stars2" jdbcType="VARCHAR" property="stars2" />
+    <result column="stars1" jdbcType="VARCHAR" property="stars1" />
+    <result column="average" jdbcType="VARCHAR" property="average" />
+    <result column="rating_people" jdbcType="VARCHAR" property="ratingPeople" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zqw.movie_recommend.entity.MovieData">
+    <result column="summary" jdbcType="LONGVARCHAR" property="summary" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    mid, season_count, year, episodes, site, douban_site, poster, title, imdb, duration, 
+    writers, directors, countries, pubdate, genres, casts, aka, languages
+  </sql>
+  <sql id="Blob_Column_List">
+    summary
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from movie_data
+    where mid = #{mid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from movie_data
+    where mid = #{mid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zqw.movie_recommend.entity.MovieData">
+    insert into movie_data (mid, season_count, year, 
+      episodes, site, douban_site, 
+      poster, title, imdb, 
+      duration, writers, directors, 
+      countries, pubdate, genres, 
+      casts, aka, languages, 
+      summary)
+    values (#{mid,jdbcType=BIGINT}, #{seasonCount,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, 
+      #{episodes,jdbcType=VARCHAR}, #{site,jdbcType=VARCHAR}, #{doubanSite,jdbcType=VARCHAR}, 
+      #{poster,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{imdb,jdbcType=VARCHAR}, 
+      #{duration,jdbcType=VARCHAR}, #{writers,jdbcType=VARCHAR}, #{directors,jdbcType=VARCHAR}, 
+      #{countries,jdbcType=VARCHAR}, #{pubdate,jdbcType=VARCHAR}, #{genres,jdbcType=VARCHAR}, 
+      #{casts,jdbcType=LONGVARCHAR}, #{aka,jdbcType=VARCHAR}, #{languages,jdbcType=VARCHAR}, 
+      #{summary,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zqw.movie_recommend.entity.MovieData">
+    insert into movie_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mid != null">
+        mid,
+      </if>
+      <if test="seasonCount != null">
+        season_count,
+      </if>
+      <if test="year != null">
+        year,
+      </if>
+      <if test="episodes != null">
+        episodes,
+      </if>
+      <if test="site != null">
+        site,
+      </if>
+      <if test="doubanSite != null">
+        douban_site,
+      </if>
+      <if test="poster != null">
+        poster,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="imdb != null">
+        imdb,
+      </if>
+      <if test="duration != null">
+        duration,
+      </if>
+      <if test="writers != null">
+        writers,
+      </if>
+      <if test="directors != null">
+        directors,
+      </if>
+      <if test="countries != null">
+        countries,
+      </if>
+      <if test="pubdate != null">
+        pubdate,
+      </if>
+      <if test="genres != null">
+        genres,
+      </if>
+      <if test="casts != null">
+        casts,
+      </if>
+      <if test="aka != null">
+        aka,
+      </if>
+      <if test="languages != null">
+        languages,
+      </if>
+      <if test="summary != null">
+        summary,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mid != null">
+        #{mid,jdbcType=BIGINT},
+      </if>
+      <if test="seasonCount != null">
+        #{seasonCount,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="episodes != null">
+        #{episodes,jdbcType=VARCHAR},
+      </if>
+      <if test="site != null">
+        #{site,jdbcType=VARCHAR},
+      </if>
+      <if test="doubanSite != null">
+        #{doubanSite,jdbcType=VARCHAR},
+      </if>
+      <if test="poster != null">
+        #{poster,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="imdb != null">
+        #{imdb,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null">
+        #{duration,jdbcType=VARCHAR},
+      </if>
+      <if test="writers != null">
+        #{writers,jdbcType=VARCHAR},
+      </if>
+      <if test="directors != null">
+        #{directors,jdbcType=VARCHAR},
+      </if>
+      <if test="countries != null">
+        #{countries,jdbcType=VARCHAR},
+      </if>
+      <if test="pubdate != null">
+        #{pubdate,jdbcType=VARCHAR},
+      </if>
+      <if test="genres != null">
+        #{genres,jdbcType=VARCHAR},
+      </if>
+      <if test="casts != null">
+        #{casts,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="aka != null">
+        #{aka,jdbcType=VARCHAR},
+      </if>
+      <if test="languages != null">
+        #{languages,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        #{summary,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zqw.movie_recommend.entity.MovieData">
+    update movie_data
+    <set>
+      <if test="seasonCount != null">
+        season_count = #{seasonCount,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null">
+        year = #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="episodes != null">
+        episodes = #{episodes,jdbcType=VARCHAR},
+      </if>
+      <if test="site != null">
+        site = #{site,jdbcType=VARCHAR},
+      </if>
+      <if test="doubanSite != null">
+        douban_site = #{doubanSite,jdbcType=VARCHAR},
+      </if>
+      <if test="poster != null">
+        poster = #{poster,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="imdb != null">
+        imdb = #{imdb,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null">
+        duration = #{duration,jdbcType=VARCHAR},
+      </if>
+      <if test="writers != null">
+        writers = #{writers,jdbcType=VARCHAR},
+      </if>
+      <if test="directors != null">
+        directors = #{directors,jdbcType=VARCHAR},
+      </if>
+      <if test="countries != null">
+        countries = #{countries,jdbcType=VARCHAR},
+      </if>
+      <if test="pubdate != null">
+        pubdate = #{pubdate,jdbcType=VARCHAR},
+      </if>
+      <if test="genres != null">
+        genres = #{genres,jdbcType=VARCHAR},
+      </if>
+      <if test="casts != null">
+        casts = #{casts,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="aka != null">
+        aka = #{aka,jdbcType=VARCHAR},
+      </if>
+      <if test="languages != null">
+        languages = #{languages,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        summary = #{summary,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where mid = #{mid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zqw.movie_recommend.entity.MovieData">
+    update movie_data
+    set season_count = #{seasonCount,jdbcType=VARCHAR},
+      year = #{year,jdbcType=VARCHAR},
+      episodes = #{episodes,jdbcType=VARCHAR},
+      site = #{site,jdbcType=VARCHAR},
+      douban_site = #{doubanSite,jdbcType=VARCHAR},
+      poster = #{poster,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      imdb = #{imdb,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=VARCHAR},
+      writers = #{writers,jdbcType=VARCHAR},
+      directors = #{directors,jdbcType=VARCHAR},
+      countries = #{countries,jdbcType=VARCHAR},
+      pubdate = #{pubdate,jdbcType=VARCHAR},
+      genres = #{genres,jdbcType=VARCHAR},
+      casts = #{casts,jdbcType=LONGVARCHAR},
+      aka = #{aka,jdbcType=VARCHAR},
+      languages = #{languages,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=LONGVARCHAR}
+    where mid = #{mid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zqw.movie_recommend.entity.MovieData">
+    update movie_data
+    set season_count = #{seasonCount,jdbcType=VARCHAR},
+      year = #{year,jdbcType=VARCHAR},
+      episodes = #{episodes,jdbcType=VARCHAR},
+      site = #{site,jdbcType=VARCHAR},
+      douban_site = #{doubanSite,jdbcType=VARCHAR},
+      poster = #{poster,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      imdb = #{imdb,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=VARCHAR},
+      writers = #{writers,jdbcType=VARCHAR},
+      directors = #{directors,jdbcType=VARCHAR},
+      countries = #{countries,jdbcType=VARCHAR},
+      pubdate = #{pubdate,jdbcType=VARCHAR},
+      genres = #{genres,jdbcType=VARCHAR},
+      casts = #{casts,jdbcType=LONGVARCHAR},
+      aka = #{aka,jdbcType=VARCHAR},
+      languages = #{languages,jdbcType=VARCHAR}
+    where mid = #{mid,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectListRand" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select a.* from movie_data a
+    join (select rand() * (select max(mid) from movie_data ) as rid) b
+    on a.mid > b.rid
+    limit #{m};
+  </select>
+
+  <select id="selectListTop"  resultMap="MoviePojoResultMap">
+  select * from movie_data md left join rating_data rd on md.mid = rd.mid
+  where year = #{arg0} order by rd.average desc limit #{arg1}
+</select>
+
+  <select id="selectListHot" resultMap="MoviePojoResultMap">
+    select * from movie_data md left join rating_data rd on md.mid = rd.mid
+    where year = #{arg0} order by rd.rating_people desc limit #{arg1}
+  </select>
+</mapper>
