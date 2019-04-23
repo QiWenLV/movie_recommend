@@ -6,8 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -44,5 +46,12 @@ public class IndexController {
         List<MovieIndexVO> indexMovieList = indexService.getIndexMovieList();
         model.addAttribute("indexList", indexMovieList);
         return "index::list1";
+    }
+
+    @RequestMapping(value = "/index/one", method = RequestMethod.GET)
+    public MovieIndexVO indexOneMovie(@RequestAttribute Long mid){
+        log.info("获取视频详情...");
+        MovieIndexVO movieIndexVO = indexService.getOneMovie(mid);
+        return movieIndexVO;
     }
 }

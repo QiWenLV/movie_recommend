@@ -35,45 +35,7 @@ public class IndexServiceImpl implements IndexService {
 
         List<MovieData> movieData = movieDataMapper.selectListRand(12);
 
-        List<MovieIndexVO> result = movieData.stream().map(x -> {
-            //平均分
-            RatingData ratingData = ratingDataMapper.selectByPrimaryKey(x.getMid());
-            if(ratingData == null){
-                ratingData = RatingData.builder()
-                        .average("0.0")
-                        .build();
-            }
-            String average = ratingData.getAverage();
-
-            //导演
-            String directors = x.getDirectors();
-            if (!"".equals(directors)) {
-                directors = directors.substring(1, directors.length());
-            }
-
-            //检查图片链接
-            String imageUrl = x.getPoster();
-            if(!ImageUrlCheck.checkUrl(imageUrl)){
-                imageUrl = ImageUrlCheck.getDoubanImage(x.getMid());
-                if(!"".equals(imageUrl)){
-                    //更新
-                    movieDataMapper.updateByPrimaryKeySelective(MovieData.builder().poster(imageUrl).build());
-                } else {
-                    //删除数据
-                }
-            }
-
-            //导出数据
-            return MovieIndexVO.builder()
-                    .img(imageUrl)
-                    .score(average)
-                    .star(Math.round(Float.valueOf(average)) / 2)
-                    .title(x.getTitle())
-                    .directors(directors)
-                    .build();
-        }).collect(Collectors.toList());
-
-        return result;
+        return movieData.stream().map(this::commonMovie).collect(Collectors.toList());
     }
 
     @Override
@@ -88,5 +50,50 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public List<MovieIndexVO> getHotMovieList(String year, Integer m) {
         return null;
+    }
+
+    @Override
+    public MovieIndexVO getOneMovie(Long mid) {
+        MovieData movieData = movieDataMapper.selectByPrimaryKey(mid);
+        return commonMovie(movieData);
+    }
+
+
+    public MovieIndexVO commonMovie(MovieData m){
+        //平均分
+        RatingData ratingData = ratingDataMapper.selectByPrimaryKey(m.getMid());
+        if(ratingData == null){
+            ratingData = RatingData.builder()
+                    .average("0.0")
+                    .build();
+        }
+        String average = ratingData.getAverage();
+
+        //导演
+        String directors = m.getDirectors();
+        if (!"".equals(directors)) {
+            directors = directors.substring(1, directors.length());
+        }
+
+        //检查图片链接
+        String imageUrl = m.getPoster();
+        if(!ImageUrlCheck.checkUrl(imageUrl)){
+            imageUrl = ImageUrlCheck.getDoubanImage(m.getMid());
+            if(!"".equals(imageUrl)){
+                //更新
+                movieDataMapper.updateByPrimaryKeySelective(MovieData.builder().poster(imageUrl).build());
+            } else {
+                //删除数据
+            }
+        }
+
+        //导出数据
+        return MovieIndexVO.builder()
+                .img(imageUrl)
+                .score(average)
+                .star(Math.round(Float.valueOf(average)) / 2)
+                .title(m.getTitle())
+                .directors(directors)
+                .build();
     }
 }

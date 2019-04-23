@@ -28,5 +28,8 @@ public interface IndexService {
     List<MovieIndexVO> getHotMovieList(String year, Integer m);
 
 
+    MovieIndexVO getOneMovie(Long mid);
+
+
 
 }
