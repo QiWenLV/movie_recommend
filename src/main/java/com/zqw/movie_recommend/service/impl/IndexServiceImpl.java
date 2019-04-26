@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class IndexServiceImpl implements IndexService {
@@ -36,6 +37,13 @@ public class IndexServiceImpl implements IndexService {
         List<MovieData> movieData = movieDataMapper.selectListRand(12);
 
         return movieData.stream().map(this::commonMovie).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MovieIndexVO> getIndexMovieList2() {
+        List<Integer> collect = Stream.generate(Math::random).map(x -> (int)(x * 19561)).limit(12).collect(Collectors.toList());
+
+        return movieDataMapper.selectListLimit(collect).stream().map(this::commonMovie).collect(Collectors.toList());
     }
 
     @Override

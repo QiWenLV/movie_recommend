@@ -25,6 +25,8 @@ public interface MovieDataMapper {
 //    @Select(value = "SELECT * FROM movie_data ORDER BY RAND() LIMIT #{m}")
     List<MovieData> selectListRand(Integer m);
 
+    List<MovieData> selectListLimit(List<Integer> inLimit);
+
     List<MoviePojo> selectListTop(String year, Integer m);
 
     List<MoviePojo> selectListHot(String year, Integer m);

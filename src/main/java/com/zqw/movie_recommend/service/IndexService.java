@@ -14,6 +14,11 @@ public interface IndexService {
     List<MovieIndexVO> getIndexMovieList();
 
     /**
+     * 主页推荐电影，优化
+     * @return
+     */
+    List<MovieIndexVO> getIndexMovieList2();
+    /**
      * 获取本年高分电影
      * @param year
      * @param m 获取数量

@@ -317,6 +317,13 @@
     on a.mid > b.rid
     limit #{m};
   </select>
+  <select id="selectListLimit">
+    select * from movie_data where mid in
+    <foreach collection="inLimit" index="index" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+
+  </select>
 
   <select id="selectListTop"  resultMap="MoviePojoResultMap">
   select * from movie_data md left join rating_data rd on md.mid = rd.mid

@@ -30,7 +30,7 @@ public class IndexController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String indexList(Model model){
         log.info("加载主页...");
-        List<MovieIndexVO> indexMovieList = indexService.getIndexMovieList();
+        List<MovieIndexVO> indexMovieList = indexService.getIndexMovieList2();
         List<MovieIndexVO> topMovieList = indexService.getTopMovieList("2017", 5);
         List<MovieIndexVO> hotMovieList = indexService.getHotMovieList("2017", 8);
 
