@@ -6,6 +6,7 @@ import com.zqw.movie_recommend.dao.RatingDataMapper;
 import com.zqw.movie_recommend.entity.MovieData;
 import com.zqw.movie_recommend.entity.MovieEntity;
 import com.zqw.movie_recommend.entity.RatingData;
+import com.zqw.movie_recommend.utils.ImageUrlCheck;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.junit.Test;
@@ -43,12 +44,19 @@ public class MovieRecommendApplicationTests {
             long count = 0;
 			while (iterator.hasNext()) {
 				String line = iterator.nextLine();
-                if( count < 19564) {
+                if( count < 607) {
                     count ++;
                     continue;
                 }
                 MovieEntity m = JSON.parseObject(line, MovieEntity.class);
                 movieId = m.get_id();
+
+                String imgUrl = getImg(m.getPoster(), Long.valueOf(movieId));
+
+                if (imgUrl == null) {
+                    continue;
+                }
+
                 //导入数据
                 //数据处理
                 MovieData movieData = MovieData.builder()
@@ -68,9 +76,9 @@ public class MovieRecommendApplicationTests {
                                 .reduce("", (x, y) -> x + "/" + y))
                         .directors(m.getDirectors().stream().map(MovieEntity.DirectorsBean::getName).reduce("", (x, y) -> x +"/"+y))
                         .countries(m.getCountries().stream().reduce("", (x, y) -> x +"/"+y))
-                        .pubdate(m.getPubdate().stream().reduce("", (x, y) -> x +"/"+y))
+                        .pubdate(m.getPubdate().stream().limit(10).reduce("", (x, y) -> x +"/"+y))
                         .genres(m.getGenres().stream().reduce("", (x, y) -> x +"/"+y))
-                        .casts(m.getCasts().stream().map(MovieEntity.CastsBean::getName).limit(20).reduce("", (x, y) -> x +"/"+y))
+                        .casts(m.getCasts().stream().map(MovieEntity.CastsBean::getName).limit(12).reduce("", (x, y) -> x +"/"+y))
                         .aka(m.getAka().stream().reduce("", (x, y) -> x +"/"+y))
                         .languages(m.getLanguages().stream().reduce("", (x, y) -> x +"/"+y))
                         .build();
@@ -102,4 +110,26 @@ public class MovieRecommendApplicationTests {
 		}
 	}
 
+
+	public String getImg(String url, Long mid){
+        String imageUrl = url;
+//        if(!ImageUrlCheck.checkUrl(imageUrl)){
+            imageUrl = ImageUrlCheck.getDoubanImage(mid);
+            if(!"".equals(imageUrl)){
+                //更新
+//                movieDataMapper.updateByPrimaryKeySelective(MovieData.builder().poster(imageUrl).build());
+                return imageUrl;
+            } else {
+                //删除数据
+                System.out.println("电影图片无效：" + mid);
+                return null;
+            }
+//        }
+//        return url;
+    }
+
+    @Test
+    public void test2(){
+//        https://img5.doubanio.com/view/movie_poster_cover/lpst/public/p2411622136.jpg
+    }
 }

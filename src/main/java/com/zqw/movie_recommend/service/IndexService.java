@@ -1,5 +1,6 @@
 package com.zqw.movie_recommend.service;
 
+import com.zqw.movie_recommend.entity.pojo.MoviePojo;
 import com.zqw.movie_recommend.entity.vo.MovieIndexVO;
 import sun.rmi.server.InactiveGroupException;
 
@@ -24,13 +25,13 @@ public interface IndexService {
      * @param m 获取数量
      * @return
      */
-    List<MovieIndexVO> getTopMovieList(String year, Integer m);
+    List<MoviePojo> getTopMovieList(String year, Integer m);
 
     /**
      * 获取本年热门电影
      * @return
      */
-    List<MovieIndexVO> getHotMovieList(String year, Integer m);
+    List<MoviePojo> getHotMovieList(String year, Integer m);
 
 
     MovieIndexVO getOneMovie(Long mid);

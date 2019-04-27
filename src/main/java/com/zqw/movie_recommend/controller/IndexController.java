@@ -1,5 +1,6 @@
 package com.zqw.movie_recommend.controller;
 
+import com.zqw.movie_recommend.entity.pojo.MoviePojo;
 import com.zqw.movie_recommend.entity.vo.MovieIndexVO;
 import com.zqw.movie_recommend.service.IndexService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +32,8 @@ public class IndexController {
     public String indexList(Model model){
         log.info("加载主页...");
         List<MovieIndexVO> indexMovieList = indexService.getIndexMovieList2();
-        List<MovieIndexVO> topMovieList = indexService.getTopMovieList("2017", 5);
-        List<MovieIndexVO> hotMovieList = indexService.getHotMovieList("2017", 8);
+        List<MoviePojo> topMovieList = indexService.getTopMovieList("2017", 5);
+        List<MoviePojo> hotMovieList = indexService.getHotMovieList("2017", 8);
 
         model.addAttribute("indexList", indexMovieList);
         model.addAttribute("topList", topMovieList);
@@ -49,9 +50,11 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/index/one", method = RequestMethod.GET)
-    public MovieIndexVO indexOneMovie(@RequestAttribute Long mid){
+    public String indexOneMovie(@RequestAttribute Long mid, Model model){
         log.info("获取视频详情...");
         MovieIndexVO movieIndexVO = indexService.getOneMovie(mid);
-        return movieIndexVO;
+
+        model.addAttribute("oneMovie", movieIndexVO);
+        return "test";
     }
 }

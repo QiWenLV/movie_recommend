@@ -36,38 +36,34 @@ public class IndexServiceImpl implements IndexService {
 
         List<MovieData> movieData = movieDataMapper.selectListRand(12);
 
-        return movieData.stream().map(this::commonMovie).collect(Collectors.toList());
+        return movieData.stream().map(x -> commonMovie(x, false)).collect(Collectors.toList());
     }
 
     @Override
     public List<MovieIndexVO> getIndexMovieList2() {
-        List<Integer> collect = Stream.generate(Math::random).map(x -> (int)(x * 19561)).limit(12).collect(Collectors.toList());
+        List<Integer> collect = Stream.generate(Math::random).map(x -> (int)(x * 600)).limit(12).collect(Collectors.toList());
 
-        return movieDataMapper.selectListLimit(collect).stream().map(this::commonMovie).collect(Collectors.toList());
+        return movieDataMapper.selectListLimit(collect).stream().map(x -> commonMovie(x, false)).collect(Collectors.toList());
     }
 
     @Override
-    public List<MovieIndexVO> getTopMovieList(String year, Integer m) {
-
-        List<MoviePojo> moviePojos = movieDataMapper.selectListTop(year, m);
-
-
-        return null;
+    public List<MoviePojo> getTopMovieList(String year, Integer m) {
+        return movieDataMapper.selectListTop(year, m);
     }
 
     @Override
-    public List<MovieIndexVO> getHotMovieList(String year, Integer m) {
-        return null;
+    public List<MoviePojo> getHotMovieList(String year, Integer m) {
+        return  movieDataMapper.selectListHot(year, m);
     }
 
     @Override
     public MovieIndexVO getOneMovie(Long mid) {
         MovieData movieData = movieDataMapper.selectByPrimaryKey(mid);
-        return commonMovie(movieData);
+        return commonMovie(movieData, false);
     }
 
 
-    public MovieIndexVO commonMovie(MovieData m){
+    public MovieIndexVO commonMovie(MovieData m, boolean isCheck){
         //平均分
         RatingData ratingData = ratingDataMapper.selectByPrimaryKey(m.getMid());
         if(ratingData == null){
@@ -85,15 +81,15 @@ public class IndexServiceImpl implements IndexService {
 
         //检查图片链接
         String imageUrl = m.getPoster();
-        if(!ImageUrlCheck.checkUrl(imageUrl)){
-            imageUrl = ImageUrlCheck.getDoubanImage(m.getMid());
-            if(!"".equals(imageUrl)){
-                //更新
-                movieDataMapper.updateByPrimaryKeySelective(MovieData.builder().poster(imageUrl).build());
-            } else {
-                //删除数据
-            }
-        }
+//        if(isCheck && !ImageUrlCheck.checkUrl(imageUrl)){
+//            imageUrl = ImageUrlCheck.getDoubanImage(m.getMid());
+//            if(!"".equals(imageUrl)){
+//                //更新
+//                movieDataMapper.updateByPrimaryKeySelective(MovieData.builder().poster(imageUrl).build());
+//            } else {
+//                //删除数据
+//            }
+//        }
 
         //导出数据
         return MovieIndexVO.builder()
