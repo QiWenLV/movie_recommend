@@ -22,7 +22,7 @@
 </head>
 <body class="">
   <section class="vbox">
-    <header class="bg-white-only header header-md navbar navbar-fixed-top-xs header"></header>
+    <header class="bg-white-only header header-md navbar navbar-fixed-top-xs my_header"></header>
     <section>
       <section class="hbox stretch">
         <!-- .aside -->
@@ -111,7 +111,7 @@
                               <!--<i class="fa fa-star-o text-muted"></i>-->
                             </div>
                             <div class="center text-center m-t-n">
-                              <a href="#"><i class="icon-control-play i-2x"></i></a>
+                              <a th:href="'/index/one/' + ${i.mid}"><i class="icon-control-play i-2x"></i></a>
                             </div>
                             <div class="bottom padder m-b-sm">
                               <a href="#" class="pull-right">
@@ -135,14 +135,14 @@
                   <div class="row">
                     <div class="col-md-7">
                       <h3 class="font-thin">热门视频</h3>
-                      <div class="row row-sm">
+                      <div class="row">
                         <!--热门视频开始-->
-                        <div class="col-xs-6 col-sm-3" th:each="i: ${hotList}">
+                        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" th:each="i: ${hotList}">
                           <div class="item" th:onclick="modelOpen(i)">
                             <div class="pos-rlt">
                               <div class="item-overlay opacity r r-2x bg-black">
                                 <div class="center text-center m-t-n">
-                                  <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                                  <a th:href="'/index/one/' + ${i.mid}"><i class="fa fa-play-circle i-2x"></i></a>
                                 </div>
                               </div>
                               <a href="#"><img th:src="${i.poster}" alt="" class="r r-2x img-full"></a>
@@ -159,7 +159,7 @@
                     <div class="col-md-5">
                       <h3 class="font-thin">近期视频排名</h3>
                       <div class="list-group bg-white list-group-lg no-bg auto">                          
-                        <a href="#" class="list-group-item clearfix" th:each="i,stat:${topList}">
+                        <a th:href="'/index/one/' + ${i.mid}" class="list-group-item clearfix" th:each="i,stat:${topList}">
                           <span class="pull-right h2 text-muted m-l" th:text="${stat.index + 1}"></span>
                           <span class="pull-left thumb-sm avatar m-r">
                             <img src="images/a4.png" th:src="${i.poster}" alt="...">
@@ -384,7 +384,7 @@
   <script>
 
       $(function () {
-          $('.header').load('header.html');
+          $('.my_header').load('header.html');
           $('.nav-primary').load('left-nav.html');
           // $('.footer').load('footer.html');
       });

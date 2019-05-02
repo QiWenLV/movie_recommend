@@ -10,6 +10,8 @@ spring:
     username: root
   thymeleaf:
     cache: false
+  mvc:
+    static-path-pattern: /**
 
 mybatis:
   mapper-locations: classpath*:mapper/*.xml

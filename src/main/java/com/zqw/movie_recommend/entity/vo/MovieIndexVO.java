@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MovieIndexVO {
 
+    private Long mid;
     private Integer star;
     private String title;
     private String img;

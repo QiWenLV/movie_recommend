@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,26 +7,23 @@
     <title>test | Web Application</title>
     <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <link rel="stylesheet" href="js/jPlayer/jplayer.flat.css" type="text/css" />
-    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
-    <link rel="stylesheet" href="css/animate.css" type="text/css" />
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/simple-line-icons.css" type="text/css" />
-    <link rel="stylesheet" href="css/font.css" type="text/css" />
-    <link rel="stylesheet" href="css/app.css" type="text/css" />
+    <link rel="stylesheet" href="/js/jPlayer/jplayer.flat.css" type="text/css" />
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="/css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="/css/simple-line-icons.css" type="text/css" />
+    <link rel="stylesheet" href="/css/font.css" type="text/css" />
+    <link rel="stylesheet" href="/css/app.css" type="text/css" />
     <!--[if lt IE 9]>
-    <script src="js/ie/html5shiv.js"></script>
-    <script src="js/ie/respond.min.js"></script>
-    <script src="js/ie/excanvas.js"></script>
+    <script src="/js/ie/html5shiv.js"></script>
+    <script src="/js/ie/respond.min.js"></script>
+    <script src="/js/ie/excanvas.js"></script>
     <![endif]-->
 </head>
 <body>
 
 <section class="vbox">
-    <header class="bg-white-only header header-md navbar navbar-fixed-top-xs header"></header>
-
-
-
+    <header class="bg-white-only header header-md navbar navbar-fixed-top-xs my_header"></header>
     <section>
         <section class="hbox stretch">
             <!-- .aside -->
@@ -68,56 +66,64 @@
                                 <!--</div>-->
                             <!--</div>-->
                             <section class="scrollable wrapper">
-                                <i class="fa fa-apple fa fa-3x"></i>
                                 <div class="row">
-                                    <div class="col-xs-6">
-                                        <h4>片名：</h4>
-                                        <p>描述：</p>
-                                        <p>导演： <br>
-                                            95014 Cuperino, CA<br>
-                                            United States
-                                        </p>
-                                        <p>
-                                            Telephone:  800-692-7753<br>
-                                            Fax:  800-692-7753
-                                        </p>
+                                    <div class="col-xs-1"></div>
+                                    <div class="col-xs-2">
+                                        <a href="#"><img th:src="${oneMovie.poster}" alt="" class="r r-2x img-full"  height="267px" referrerpolicy ="never"></a>
                                     </div>
-                                    <div class="col-xs-6 text-right">
-                                        <p class="h4">#9048392</p>
-                                        <h5>29th Mar 2013</h5>
+                                    <div class="col-xs-5">
+                                        <h4 th:text="'片名：'+ ${oneMovie.title}"></h4>
+                                        <br>
+                                        <p th:text="'类型：'+ ${oneMovie.genres}"></p>
+                                        <p th:text="'导演：'+ ${oneMovie.directors}"></p>
+                                        <p th:text="'演员：'+ ${oneMovie.casts}"></p>
+                                        <p th:text="'国家：'+ ${oneMovie.countries}"></p>
+                                        <p th:text="'上映时间：'+ ${oneMovie.pubdate}"></p>
+                                        <p th:text="'其他译名：'+ ${oneMovie.aka}"></p>
+
+                                        <p th:text="'描述：'+${oneMovie.summary}"> </p>
+                                    </div>
+                                    <div class="col-xs-1"></div>
+                                    <div class="col-xs-3 text-left">
+                                        <p class="h3">评分</p>
+                                        <br>
+                                        <p th:text="'  五星： '+ ${oneRating.getStars5()} + '%'"></p>
+                                        <p th:text="'  四星： '+ ${oneRating.getStars4()} + '%'"></p>
+                                        <p th:text="'  三星： '+ ${oneRating.getStars3()} + '%'"></p>
+                                        <p th:text="'  二星： '+ ${oneRating.getStars2()} + '%'"></p>
+                                        <p th:text="'  一星： '+ ${oneRating.getStars1()} + '%'"></p>
+                                        <br>
+                                        <p th:text="'  平均分： '+ ${oneRating.getAverage()}"></p>
+                                        <p th:text="'  评分人数： '+ ${oneRating.getRatingPeople()} + '人'"></p>
                                     </div>
                                 </div>
                                 <div class="well bg-light b m-t">
                                     <div class="row">
                                         <div class="col-xs-6">
-                                            <strong>TO:</strong>
-                                            <h4>admin</h4>
-                                            <p>
-                                                2nd Floor<br>
-                                                St admin Street, Aberdeenshire 2541<br>
-                                                United Kingdom<br>
-                                                Phone: 031-432-678<br>
-                                                Email: youemail@gmail.com<br>
-                                            </p>
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <strong>SHIP TO:</strong>
-                                            <h4>admin</h4>
-                                            <p>
-                                                2nd Floor<br>
-                                                St admin Street, Aberdeenshire 2541<br>
-                                                United Kingdom<br>
-                                                Phone: 031-432-678<br>
-                                                Email: youemail@gmail.com<br>
-                                            </p>
+                                            <input type="text" name="userScore">  <button type="button" class="btn btn-danger btn-sm" th:onclick="'javascript:submitScore('+${oneMovie.mid}+')'">提交</button>
                                         </div>
                                     </div>
                                 </div>
-                                <p class="m-t m-b">Order date: <strong>26th Mar 2013</strong><br>
-                                    Order status: <span class="label bg-success">Shipped</span><br>
-                                    Order ID: <strong>#9399034</strong>
-                                </p>
-                                <div class="line"></div>
+                                <div class="well bg-light b m-t" >
+                                    <div class="row" style="width: 100%" th:fragment="recommend" id="recommend">
+                                        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" th:each="i: ${recommendList}">
+                                            <div class="item" >
+                                                <div class="pos-rlt">
+                                                    <div class="item-overlay opacity r r-2x bg-black">
+                                                        <div class="center text-center m-t-n">
+                                                            <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <a th:href="'/index/one/' + ${i.mid}"><img th:src="${i.img}" alt="" class="r r-2x img-full"></a>
+                                                </div>
+                                                <div class="padder-v">
+                                                    <a href="#" class="text-ellipsis" th:text="${i.title}"></a>
+                                                    <a href="#" class="text-ellipsis text-xs text-muted" th:text="${i.directors}"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </section>
 
@@ -131,15 +137,48 @@
 
     </section>
 </section>
-<script src="js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <!-- Bootstrap -->
-<script src="js/bootstrap.js"></script>
+<script src="/js/bootstrap.js"></script>
 <!-- App -->
-<script src="js/app.js"></script>
-<script src="js/slimscroll/jquery.slimscroll.min.js"></script>
-<script src="js/app.plugin.js"></script>
-<script type="text/javascript" src="js/jPlayer/jquery.jplayer.min.js"></script>
-<script type="text/javascript" src="js/jPlayer/add-on/jplayer.playlist.min.js"></script>
-<script type="text/javascript" src="js/jPlayer/demo.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/js/app.plugin.js"></script>
+<script type="text/javascript" src="/js/jPlayer/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
+<script type="text/javascript" src="/js/jPlayer/demo.js"></script>
+
+<script>
+    $(function () {
+        $('.my_header').load('/header.html');
+        $('.nav-primary').load('/left-nav.html');
+        // $('.footer').load('footer.html');
+    });
+
+    var submitScore = function (mid) {
+        console.log("点击了提交");
+        var url = '/index/recommend/'+mid;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (data) {
+                $("#recommend").html(data);
+            }
+        });
+    }
+
+    // $('#submitScore').click(function () {
+    //     console.log("点击了提交");
+    //     var url = '/index/recommend/';
+    //     $.ajax({
+    //         url: url,
+    //         type: 'GET',
+    //         success: function (data) {
+    //             $("#list1").html(data);
+    //         }
+    //     });
+    // });
+
+</script>
 </body>
 </html>

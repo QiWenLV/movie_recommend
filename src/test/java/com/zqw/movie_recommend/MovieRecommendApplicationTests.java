@@ -7,15 +7,20 @@ import com.zqw.movie_recommend.entity.MovieData;
 import com.zqw.movie_recommend.entity.MovieEntity;
 import com.zqw.movie_recommend.entity.RatingData;
 import com.zqw.movie_recommend.utils.ImageUrlCheck;
+import com.zqw.movie_recommend.utils.KV;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.*;
+import java.sql.JDBCType;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +33,9 @@ public class MovieRecommendApplicationTests {
 
     @Autowired
     private RatingDataMapper ratingDataMapper;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 	@Test
 	public void contextLoads() throws IOException {
@@ -44,10 +52,14 @@ public class MovieRecommendApplicationTests {
             long count = 0;
 			while (iterator.hasNext()) {
 				String line = iterator.nextLine();
-                if( count < 607) {
+                if( count < 2526) {
                     count ++;
                     continue;
                 }
+                if(count % 100 == 0){
+                    Thread.sleep(20000);
+                }
+                Thread.sleep(2000);
                 MovieEntity m = JSON.parseObject(line, MovieEntity.class);
                 movieId = m.get_id();
 
@@ -107,29 +119,51 @@ public class MovieRecommendApplicationTests {
 		} catch (IOException e) {
             System.out.println("异常电影：" + movieId);
 			e.printStackTrace();
-		}
-	}
+		} catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 	public String getImg(String url, Long mid){
         String imageUrl = url;
-//        if(!ImageUrlCheck.checkUrl(imageUrl)){
+        if(!ImageUrlCheck.checkUrl(imageUrl)){
+            System.out.println(mid + ": 进入更新");
             imageUrl = ImageUrlCheck.getDoubanImage(mid);
             if(!"".equals(imageUrl)){
                 //更新
-//                movieDataMapper.updateByPrimaryKeySelective(MovieData.builder().poster(imageUrl).build());
+                movieDataMapper.updateByPrimaryKeySelective(MovieData.builder().mid(mid).poster(imageUrl).build());
+                System.out.println(mid + ": 更新成功");
                 return imageUrl;
             } else {
                 //删除数据
                 System.out.println("电影图片无效：" + mid);
                 return null;
             }
-//        }
-//        return url;
+        }
+        System.out.println(mid + ": 正常数据");
+        return url;
     }
 
     @Test
     public void test2(){
-//        https://img5.doubanio.com/view/movie_poster_cover/lpst/public/p2411622136.jpg
+
+	    RowMapper<MovieData> rowMapper = new BeanPropertyRowMapper<MovieData>(MovieData.class);
+        List<MovieData> query = jdbcTemplate.query("select * from movie_data", rowMapper);
+
+        query.stream().map(x -> new KV<Long, String>(x.getMid(), x.getPoster()))
+                .forEach(x -> {
+                    getImg(x.getV(), x.getK());
+                });
+    }
+
+
+    @Test
+    public void test3(){
+
+        RowMapper<MovieData> rowMapper = new BeanPropertyRowMapper<MovieData>(MovieData.class);
+        List<MovieData> query = jdbcTemplate.query("select * from movie_data", rowMapper);
+
+
     }
 }

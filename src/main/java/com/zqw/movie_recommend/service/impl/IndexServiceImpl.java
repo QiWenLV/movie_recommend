@@ -6,6 +6,7 @@ import com.zqw.movie_recommend.entity.MovieData;
 import com.zqw.movie_recommend.entity.RatingData;
 import com.zqw.movie_recommend.entity.pojo.MoviePojo;
 import com.zqw.movie_recommend.entity.vo.MovieIndexVO;
+import com.zqw.movie_recommend.entity.vo.OneMovieVO;
 import com.zqw.movie_recommend.service.IndexService;
 import com.zqw.movie_recommend.utils.ImageUrlCheck;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,13 +33,13 @@ public class IndexServiceImpl implements IndexService {
     }
 
 
-    @Override
-    public List<MovieIndexVO> getIndexMovieList() {
-
-        List<MovieData> movieData = movieDataMapper.selectListRand(12);
-
-        return movieData.stream().map(x -> commonMovie(x, false)).collect(Collectors.toList());
-    }
+//    @Override
+//    public List<MovieIndexVO> getIndexMovieList() {
+//
+//        List<MovieData> movieData = movieDataMapper.selectListRand(12);
+//
+//        return movieData.stream().map(x -> commonMovie(x, false)).collect(Collectors.toList());
+//    }
 
     @Override
     public List<MovieIndexVO> getIndexMovieList2() {
@@ -57,9 +59,41 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public MovieIndexVO getOneMovie(Long mid) {
+    public OneMovieVO getOneMovie(Long mid) {
         MovieData movieData = movieDataMapper.selectByPrimaryKey(mid);
-        return commonMovie(movieData, false);
+        OneMovieVO oneMovieVO = OneMovieVO.builder()
+                .mid(movieData.getMid())
+                .year(movieData.getYear())
+                .poster(movieData.getPoster())
+                .title(movieData.getTitle())
+                .duration(movieData.getDuration())
+                .summary(movieData.getSummary())
+                .writers(mySplit(movieData.getWriters()))
+                .directors(mySplit(movieData.getDirectors()))
+                .countries(mySplit(movieData.getCountries()))
+                .pubdate(mySplit(movieData.getPubdate()))
+                .genres(mySplit(movieData.getGenres()))
+                .casts(mySplit(movieData.getCasts()))
+                .aka(mySplit(movieData.getAka()))
+                .languages(mySplit(movieData.getLanguages()))
+                .build();
+
+        return oneMovieVO;
+    }
+
+    @Override
+    public RatingData getOneMovieRating(Long mid){
+        RatingData ratingData = ratingDataMapper.selectByPrimaryKey(mid);
+        if(ratingData == null){
+            ratingData = RatingData.builder()
+                    .average("0.0")
+                    .build();
+        }
+        return ratingData;
+    }
+
+    public String mySplit(String origin){
+        return Arrays.stream(origin.split("/")).filter(x -> !"".equals(x)).collect(Collectors.joining("，", " ", " "));
     }
 
 
@@ -93,6 +127,7 @@ public class IndexServiceImpl implements IndexService {
 
         //导出数据
         return MovieIndexVO.builder()
+                .mid(m.getMid())
                 .img(imageUrl)
                 .score(average)
                 .star(Math.round(Float.valueOf(average)) / 2)

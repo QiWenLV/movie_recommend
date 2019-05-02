@@ -1,7 +1,10 @@
 package com.zqw.movie_recommend.service;
 
+import com.zqw.movie_recommend.entity.MovieData;
+import com.zqw.movie_recommend.entity.RatingData;
 import com.zqw.movie_recommend.entity.pojo.MoviePojo;
 import com.zqw.movie_recommend.entity.vo.MovieIndexVO;
+import com.zqw.movie_recommend.entity.vo.OneMovieVO;
 import sun.rmi.server.InactiveGroupException;
 
 import java.util.List;
@@ -12,7 +15,7 @@ public interface IndexService {
      * 获取主页推荐电影
      * @return
      */
-    List<MovieIndexVO> getIndexMovieList();
+//    List<MovieIndexVO> getIndexMovieList();
 
     /**
      * 主页推荐电影，优化
@@ -34,7 +37,9 @@ public interface IndexService {
     List<MoviePojo> getHotMovieList(String year, Integer m);
 
 
-    MovieIndexVO getOneMovie(Long mid);
+    OneMovieVO getOneMovie(Long mid);
+
+    RatingData getOneMovieRating(Long mid);
 
 
 

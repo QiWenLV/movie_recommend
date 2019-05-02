@@ -42,7 +42,7 @@ public class ImageUrlCheck {
         }
         // 输出返回状态码 成功返回：HTTP/1.1 200 OK，
         // 判断字符串中是否含有“200”即可表示测试连接成功
-        return "200".equals(response.getStatusLine().getStatusCode());
+        return 200 == response.getStatusLine().getStatusCode();
     }
 
     public static String getDoubanImage(Long mid){
