@@ -28,6 +28,12 @@ public class IndexController {
         this.indexService = indexService;
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String login(Model model){
+
+        return "signin";
+    }
+
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String indexList(Model model){
         log.info("加载主页...");
